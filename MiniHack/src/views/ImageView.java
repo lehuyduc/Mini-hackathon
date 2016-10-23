@@ -11,7 +11,7 @@ import java.awt.*;
  * Created by Le Huy Duc on 19/10/2016.
  */
 public class ImageView implements GameView{
-    protected Image image;
+    private Image image;
 
     public void setImage(String link) {
         image = Utils.getImage(link);

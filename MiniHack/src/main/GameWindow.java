@@ -5,12 +5,15 @@ import main.GameConfig;
 import models.Player;
 import utilities.Utils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Le Huy Duc on 19/10/2016.
@@ -18,10 +21,9 @@ import java.awt.image.BufferedImage;
 public class GameWindow extends Frame implements Runnable {
 
     private int BACKGROUND_WIDTH = GameConfig.BACKGROUND_WIDTH, BACKGROUND_HEIGHT = GameConfig.BACKGROUND_HEIGHT;
-    public static  GameState gameState = GameState.GAME;
+    public static  GameState gameState = GameState.MENU;
 
     BufferedImage backBufferImage = new BufferedImage(BACKGROUND_WIDTH,BACKGROUND_HEIGHT,BufferedImage.TYPE_INT_RGB);
-    MummyController mummyController = MummyController.create(2,6);
 
 
 
@@ -77,7 +79,7 @@ public class GameWindow extends Frame implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode()==KeyEvent.VK_ENTER && gameState==GameState.MENU)
-                    gameState = GameState.CHOOSING_LEVEL;
+                    gameState = GameState.GAME;
                 if (e.getKeyCode()==KeyEvent.VK_ENTER && gameState==GameState.CHOOSING_LEVEL) {
                     gameState = GameState.GAME;
                     GamePlay.instance.init();
@@ -93,7 +95,7 @@ public class GameWindow extends Frame implements Runnable {
 
             }
         });
-
+//
 
         repaint();
     }
@@ -107,9 +109,8 @@ public class GameWindow extends Frame implements Runnable {
     public void update(Graphics g) {
         Graphics backBufferGraphics = backBufferImage.getGraphics();
 
-        Background.instance.draw(backBufferGraphics);
         if (gameState==GameState.MENU) GameMenu.instance.draw(backBufferGraphics);
-        GamePlay.instance.draw(backBufferGraphics);
+        if (gameState==GameState.GAME) GamePlay.instance.draw(backBufferGraphics);
 
         g.drawImage(backBufferImage,0,0,BACKGROUND_WIDTH,BACKGROUND_HEIGHT,this);
     }
@@ -120,7 +121,8 @@ public class GameWindow extends Frame implements Runnable {
             try {
                 Thread.sleep(25);
 
-                GamePlay.instance.run();
+                if (gameState==GameState.MENU) GameMenu.instance.run();
+                if (gameState==GameState.GAME) GamePlay.instance.run();
 
                 repaint();
             } catch (InterruptedException e) {

@@ -12,9 +12,11 @@ public class SingleController implements BaseController {
 
     protected GameObject gameObject;
     protected GameView gameView;
-    public static final int[] dx = {0,1,-1,0,0,-1,1,-1,1};
-    public static final int[] dy = {0,0,0,1,-1,-1,-1,1,1};
+    public static final int[] dx = {0,0,0,1,-1,-1,1,-1,1};
+    public static final int[] dy = {0,1,-1,0,0,-1,-1,1,1};
 
+    public boolean isMoving = false;
+    public boolean isFighting = false;
 
     //**********  GETTER  ******************************************************************
     public GameObject getGameObject() {return gameObject;}

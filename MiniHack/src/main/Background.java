@@ -43,15 +43,16 @@ public class Background {
     public void draw(Graphics g) {
         g.drawImage(background,0,0,GameConfig.BACKGROUND_WIDTH,GameConfig.BACKGROUND_HEIGHT,null);
 
-        for (int column=0;column<=MAP_WIDTH;column++)
-            for (int row=0;row<=MAP_HEIGHT;row++) {
+        for (int column=0;column<=MAP_WIDTH+1;column++)
+            for (int row=0;row<=MAP_HEIGHT+1;row++) {
                 int sql = GamePlay.TILE_LENGTH;
-                int x = column + MAP_LEFT;
-                int y = row + MAP_TOP;
+                int x = column + MAP_LEFT - 1;
+                int y = row + MAP_TOP - 1;
                 int cornerX = x * sql;
                 int cornerY = y * sql;
-                if (backgroundTile[x][y]==null) continue;
-                g.drawImage(backgroundTile[x][y],cornerX,cornerY,sql,sql,null);
+                if (backgroundTile[column][row]==null) continue;
+
+                g.drawImage(backgroundTile[column][row],cornerX,cornerY,sql,sql,null);
             }
     }
 

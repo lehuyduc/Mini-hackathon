@@ -9,5 +9,6 @@ public class Program {
         GameWindow gameWindow = new GameWindow();
         Thread thread = new Thread(gameWindow);
         thread.start();
+
     }
 }

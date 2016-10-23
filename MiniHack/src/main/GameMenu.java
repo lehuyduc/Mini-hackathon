@@ -11,11 +11,11 @@ public class GameMenu implements GameGame {
 
     public void init() {
         Background.instance.init();
-        Background.background = Utils.getImage("game_menu.png");
+        Background.background = Utils.getImage("menuback.jpg");
     }
 
     private GameMenu() {
-
+        init();
     }
 
     public void draw(Graphics g) {

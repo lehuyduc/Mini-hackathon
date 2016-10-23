@@ -17,7 +17,7 @@ public class Utils {
     public static Image getImage(String link) {
         Image res = null;
         try {
-            res = ImageIO.read(new File("resources/" + link));
+            res = ImageIO.read(new File("images/" + link));
         } catch (IOException e) {
             e.printStackTrace();
         }

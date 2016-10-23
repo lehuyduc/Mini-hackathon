@@ -1,7 +1,7 @@
 package main;
 
 import controllers.*;
-import main.levels.LevelManager;
+import utilities.Utils;
 
 import java.awt.*;
 
@@ -22,13 +22,20 @@ public class GamePlay implements GameGame {
     public static boolean playerTurn = true;
 
     private LevelManager levelManager;
-    public static int exitX, exitY;
+    public static int exitX = 12312365, exitY = -123954;
 
     public void init() {
         levelManager = new LevelManager();
+        Background.instance.init();
+        Background.background = Utils.getImage("floor6.jpg");
+    }
+
+    public GamePlay() {
+
     }
 
     public synchronized void draw(Graphics g) {
+        Background.instance.draw(g);
         ControllerController.instance.draw(g);
     }
 

@@ -12,20 +12,20 @@ public class ControllerController {
     }
 
     public void init() {
-        MummyControllerManager.instance.clear();
+        EnemyControllerManager.instance.clear();
         PlayerController.instance.setX(-1);
         PlayerController.instance.setY(-1);
     }
 
     public void draw(Graphics g) {
         PlayerController.instance.draw(g);
-        MummyControllerManager.instance.draw(g);
+        EnemyControllerManager.instance.draw(g);
         WallControllerManager.instance.draw(g);
     }
 
     public void run() {
         PlayerController.instance.run();
-        MummyControllerManager.instance.run();
+        EnemyControllerManager.instance.run();
         WallControllerManager.instance.run();
     }
 
