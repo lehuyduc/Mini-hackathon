@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.movement.MoveType;
 import models.GameObject;
 import views.GameView;
 
@@ -14,6 +15,7 @@ public class SingleController implements BaseController {
     protected GameView gameView;
     public static final int[] dx = {0,0,0,1,-1,-1,1,-1,1};
     public static final int[] dy = {0,1,-1,0,0,-1,-1,1,1};
+    public static final MoveType[] moveTypes = {MoveType.STAY,MoveType.DOWN,MoveType.UP,MoveType.RIGHT,MoveType.LEFT};
 
     public boolean isMoving = false;
     public boolean isFighting = false;
@@ -47,6 +49,14 @@ public class SingleController implements BaseController {
         return gameObject.getHeight();
     }
 
+    public int getHealth() {
+        return gameObject.getHealth();
+    }
+
+    public boolean isAlive() {
+        return gameObject.isAlive();
+    }
+
     //**********  SETTER ******************************************************************
     public void setX(int v) {gameObject.setX(v);}
 
@@ -68,6 +78,9 @@ public class SingleController implements BaseController {
         gameObject.setColumn(column);
     }
 
+    public void setHealth(int v) {gameObject.setHealth(v);}
+
+    public void setIsAlive(boolean v) {gameObject.setIsAlive(v);}
 
     public SingleController() {
 
@@ -78,9 +91,22 @@ public class SingleController implements BaseController {
         gameView = gv;
     }
 
+    public void init() {
+
+    }
+
+    public boolean finished() {
+        return !isMoving && !isFighting;
+    }
+
+    public boolean deleteNow() {
+        return (!gameObject.isAlive());
+    }
+
     public void move(GameObject go) {
 
     }
+
 
     public void draw(Graphics g) {
         gameView.drawImage(g,gameObject);

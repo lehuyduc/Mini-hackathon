@@ -1,5 +1,6 @@
 package main;
 
+import controllers.ControllerController;
 import controllers.EnemyControllerManager;
 import controllers.WallControllerManager;
 
@@ -16,8 +17,7 @@ public class LevelManager {
     }
 
     private void newLevel() {
-        EnemyControllerManager.instance.clear();
-        WallControllerManager.instance.clear();
+        ControllerController.instance.init();
         for (int i=0;i<30;i++)
             for (int j=0;j<30;j++) GamePlay.wallDown[i][j] = GamePlay.wallRight[i][j] = false;
     }

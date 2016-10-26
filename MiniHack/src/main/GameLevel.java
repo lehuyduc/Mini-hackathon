@@ -113,6 +113,8 @@ public class GameLevel {
                 mummyControllers[i] = EnemyControllerWhite.create(x,y);
             if (MummyType.valueOf(type)==MummyType.RED)
                 mummyControllers[i] = EnemyControllerRed.create(x,y);
+            if (MummyType.valueOf(type)==MummyType.SCORPION)
+                mummyControllers[i] = EnemyControllerScorpion.create(x,y);
         }
 
         for (int i=1;i<=n;i++) {
@@ -129,6 +131,8 @@ public class GameLevel {
         y = input.nextInt();
         PlayerController.instance.setColumn(x);
         PlayerController.instance.setRow(y);
+        PlayerController.instance.setIsAlive(true);
+        PlayerController.instance.setHealth(1);
         exitX = input.nextInt();
         exitY = input.nextInt();
     }
@@ -146,6 +150,7 @@ public class GameLevel {
         createWallRight();
         createMummy();
         createPlayer();
+        GamePlay.playerTurn = true;
 
         Background.instance.init();
         backgroundTile[exitX][exitY] = Utils.getImage("power-up.png");
@@ -156,13 +161,14 @@ public class GameLevel {
 
 
     public boolean hasLose() {
-        Vector<SingleController> singleControllers = EnemyControllerManager.instance.getManager();
-        for (SingleController singleController : singleControllers) {
-            GameObject go = singleController.getGameObject();
-            if (go.getX()== PlayerController.instance.getX() &&
-                    go.getY()==PlayerController.instance.getY()) return true;
-        }
-        return false;
+        return PlayerController.instance.getHealth() <= 0;
+//        Vector<SingleController> singleControllers = EnemyControllerManager.instance.getManager();
+//        for (SingleController singleController : singleControllers) {
+//            GameObject go = singleController.getGameObject();
+//            if (go.getX()== PlayerController.instance.getX() &&
+//                    go.getY()==PlayerController.instance.getY()) return true;
+//        }
+//        return false;
     }
 
     public boolean hasWon() {

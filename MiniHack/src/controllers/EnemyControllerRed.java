@@ -1,31 +1,58 @@
 package controllers;
 
+import main.GameConfig;
 import main.GamePlay;
 import models.GameObject;
 import utilities.Utils;
+import views.ImageView;
 
 import java.awt.*;
 
 /**
  * Created by Le Huy Duc on 23/10/2016.
  */
-public class EnemyControllerRed extends EnemyController {
+public class EnemyControllerRed extends EnemyController implements Colliable {
 
     private static int SIZEX = 50, SIZEY = 50;
-    private int moveDirections = 4;
+    private int moveStep;
 
 
     private EnemyControllerRed(int column, int row) {
         super(column,row);
-        gameView.setImage("plane2.png");
+        unitName = "redmummy";
+        moveDirections = 4;
+        maxMoveStep = 2;
+        moveStep = maxMoveStep;
+        gameObject.setPowerLevel(3);
+        gameObject.setHealth(3);
     }
 
     public static EnemyControllerRed create(int column, int row) {
         return new EnemyControllerRed(column,row);
     }
 
+    public void init() {
+        moveStep = maxMoveStep;
+    }
+
+    //********* COLLISION **************************************************************//
+    @Override
+    public GameObject getCollisionObject() {
+        return gameObject;
+    }
+
+    @Override
+    public void onCollide(Colliable col) {
+        if (col instanceof SingleController) {
+            GameObject go = col.getCollisionObject();
+            if (go.getPowerLevel() > gameObject.getPowerLevel()) {
+                gameObject.takeDamage(go.getPowerLevel());
+            }
+        }
+    }
+
     private Point tryDirection(int column0, int row0) {
-        int column, row, best = 1000000;
+        int column, row, sql = GameConfig.DEFAULT_TILE_LENGTH, best = 1000000;
         Point res = new Point(column0,row0);
         GameObject player = PlayerController.instance.getGameObject();
 
@@ -34,26 +61,40 @@ public class EnemyControllerRed extends EnemyController {
             row = row0 + dy[i];
             if (Utils.manDistance(column,row,player.getColumn(),player.getRow()) <= best) {
                 best = Utils.manDistance(column,row,player.getColumn(),player.getRow());
-                if (Utils.canMoveTo(column0,row0,column,row)) res = new Point(column,row);
+                if (Utils.canMoveTo(column0,row0,column,row)) {
+                    res = new Point(column,row);
+                    moveType = moveTypes[i];
+                    targetPoint = new Point(column*sql+sql/2,row*sql+sql/2);
+                    targetGrid = new Point(column,row);
+                }
             }
         }
+
         return res;
     }
 
     public void move(GameObject go) {
         Point target = tryDirection(go.getColumn(),go.getRow());
-        go.setColumn(target.x);
-        go.setRow(target.y);
+        if (target.x==getColumn() && target.y==getRow()) return;
+        isMoving = true;
+        animationView.firstImage = System.currentTimeMillis();
+    }
+
+    public boolean finished() {
+        return (!isMoving) && (!isFighting) && moveStep==0;
     }
 
     public void draw(Graphics g) {
-        gameView.drawImage(g,gameObject);
+        if (animationView.nImage==0) animationView.setSheet("redmummy_down.png",5);
+        if (isMoving) animationView.drawImage(g,gameObject);
+        else animationView.drawImage(g,gameObject,true);
     }
 
+
     public void run() {
+        if (isMoving) {moveAnimation(); return;}
         if (GamePlay.playerTurn) return;
-        move(gameObject);
-        move(gameObject);
+        if (moveStep > 0) {moveStep--; move(gameObject);}
     }
 
 }

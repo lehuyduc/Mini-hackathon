@@ -78,16 +78,17 @@ public class GameWindow extends Frame implements Runnable {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode()==KeyEvent.VK_ENTER && gameState==GameState.MENU)
-                    gameState = GameState.GAME;
+                if (e.getKeyCode()==KeyEvent.VK_ENTER && gameState==GameState.MENU) {
+                    gameState = GameState.CHOOSING_LEVEL;
+                    return;
+                }
                 if (e.getKeyCode()==KeyEvent.VK_ENTER && gameState==GameState.CHOOSING_LEVEL) {
                     gameState = GameState.GAME;
                     GamePlay.instance.init();
+                    return;
                 }
                 if (e.getKeyCode()== KeyEvent.VK_ESCAPE && gameState==GameState.GAME)
                     gameState = GameState.CHOOSING_LEVEL;
-
-
             }
 
             @Override
@@ -110,6 +111,7 @@ public class GameWindow extends Frame implements Runnable {
         Graphics backBufferGraphics = backBufferImage.getGraphics();
 
         if (gameState==GameState.MENU) GameMenu.instance.draw(backBufferGraphics);
+        if (gameState==GameState.CHOOSING_LEVEL) GameChoosingLevel.instance.draw(backBufferGraphics);
         if (gameState==GameState.GAME) GamePlay.instance.draw(backBufferGraphics);
 
         g.drawImage(backBufferImage,0,0,BACKGROUND_WIDTH,BACKGROUND_HEIGHT,this);
@@ -122,6 +124,7 @@ public class GameWindow extends Frame implements Runnable {
                 Thread.sleep(25);
 
                 if (gameState==GameState.MENU) GameMenu.instance.run();
+                if (gameState==GameState.CHOOSING_LEVEL) GameChoosingLevel.instance.run();
                 if (gameState==GameState.GAME) GamePlay.instance.run();
 
                 repaint();

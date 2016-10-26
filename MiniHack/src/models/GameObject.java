@@ -11,6 +11,10 @@ public class GameObject {
     protected int x = 0, y = 0;
     protected int row = 0, column = 0;
     protected int width = 0, height = 0, cornerX = 0, cornerY = 0;
+    protected int health = 1;
+    protected boolean isAlive = true;
+
+    protected int powerLevel = 0;
 
     public int getX() {return x;}
 
@@ -35,6 +39,12 @@ public class GameObject {
     public int getHeight() {
         return height;
     }
+
+    public int getPowerLevel() {return powerLevel;}
+
+    public int getHealth() {return health;}
+
+    public boolean isAlive() {return isAlive;}
 
     public void setX(int v) {x = v; cornerX = x - width/2;}
 
@@ -61,6 +71,14 @@ public class GameObject {
         row = v;
         setY(row * sql + sql/2);
     }
+
+    public void setPowerLevel(int v) {powerLevel = v;}
+
+    public void setHealth(int v) {health = v; if (health<=0) isAlive = false;}
+
+    public void takeDamage(int v) {setHealth(health-v);}
+
+    public void setIsAlive(boolean v) {isAlive = v;}
 
     public void move(int dx,int dy) {
         column += dx;

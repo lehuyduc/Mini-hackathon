@@ -4,6 +4,7 @@ import main.GamePlay;
 import models.GameObject;
 import models.Mummy;
 import utilities.Utils;
+import views.AnimationView;
 import views.ImageView;
 
 import java.awt.*;
@@ -11,17 +12,17 @@ import java.awt.*;
 /**
  * Created by Le Huy Duc on 20/10/2016.
  */
-public class EnemyController extends SingleController {
+public class EnemyController extends SingleControllerWithAnimation {
 
     private static int SIZEX = 50, SIZEY = 50;
-    private int moveDirections = 4;
-
-    private void checkDefault() {
-    }
+    protected int moveDirections = 4;
+    protected int maxMoveStep = 0;
 
     protected EnemyController(int column, int row) {
-        super(new GameObject(column,row,SIZEX,SIZEY), new ImageView("plane3.png"));
-        checkDefault();
+        super();
+        gameObject = new GameObject(column,row,SIZEX,SIZEY);
+        gameView = new AnimationView();
+        animationView = (AnimationView)gameView;
     }
 
     public void draw(Graphics g) {

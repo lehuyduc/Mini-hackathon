@@ -1,6 +1,7 @@
 package controllers;
 
 import java.awt.*;
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -24,6 +25,19 @@ public class ControllerManager implements BaseController {
 
     public void add(SingleController singleController) {
         singleControllers.add(singleController);
+        if (singleController instanceof Colliable) CollisionManager.instance.add((Colliable)singleController);
+    }
+
+    public void remove(SingleController sc) {
+        singleControllers.remove(sc);
+    }
+
+    public void remove() {
+        Iterator<SingleController> it = singleControllers.iterator();
+        while (it.hasNext()) {
+            SingleController sc = it.next();
+            if (sc.deleteNow()) it.remove();
+        }
     }
 
     public void clear() {
@@ -39,5 +53,6 @@ public class ControllerManager implements BaseController {
     public void run() {
         for (SingleController singleController : singleControllers)
             singleController.run();
+        remove();
     }
 }

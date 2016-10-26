@@ -13,6 +13,8 @@ public class ControllerController {
 
     public void init() {
         EnemyControllerManager.instance.clear();
+        WallControllerManager.instance.clear();
+        CollisionManager.instance.clear();
         PlayerController.instance.setX(-1);
         PlayerController.instance.setY(-1);
     }
@@ -26,6 +28,7 @@ public class ControllerController {
     public void run() {
         PlayerController.instance.run();
         EnemyControllerManager.instance.run();
+        CollisionManager.instance.run();
         WallControllerManager.instance.run();
     }
 

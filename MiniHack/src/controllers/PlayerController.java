@@ -16,17 +16,13 @@ import java.awt.*;
 /**
  * Created by Le Huy Duc on 19/10/2016.
  */
-public class PlayerController extends SingleController {
+public class PlayerController extends SingleControllerWithAnimation implements Colliable {
 
     private static int SIZEX = 35, SIZEY = 35;
 
     private KeyInput keyInput = new KeyInput();
     public KeyInputListener keyInputListener = new KeyInputListener(keyInput);
     long lastMove = System.currentTimeMillis();
-    private MoveType moveType;
-    private boolean initAnimation = false;
-    private AnimationView animationView;
-    private Point targetPoint, targetGrid;
 
 
     private PlayerController(int column, int row) {
@@ -34,7 +30,27 @@ public class PlayerController extends SingleController {
         gameObject = new Player(column,row);
         gameView = new AnimationView();
         animationView = (AnimationView)gameView;
+        unitName = "explorer";
+        gameObject.setPowerLevel(1);
+        gameObject.setHealth(1);
     }
+
+    //********* COLLISION **************************************************************//
+    @Override
+    public GameObject getCollisionObject() {
+        return gameObject;
+    }
+
+    @Override
+    public void onCollide(Colliable col) {
+        if (col instanceof EnemyController) {
+            GameObject go = col.getCollisionObject();
+            if (go.getPowerLevel() >= gameObject.getPowerLevel()) {
+                gameObject.takeDamage(go.getPowerLevel());
+            }
+        }
+    }
+
 
     static int counter = 0;
     public boolean tryMove(GameObject go,int x2,int y2) {
@@ -60,33 +76,11 @@ public class PlayerController extends SingleController {
         if (keyInput.keySpace) {GamePlay.playerTurn = false; lastMove = System.currentTimeMillis();}
     }
 
-    public void initAnimation() {
-        if (moveType==MoveType.DOWN) animationView.setSheet("explorer_down.png",5);
-        if (moveType==MoveType.RIGHT) animationView.setSheet("explorer_right.png",5);
-        if (moveType==MoveType.LEFT) animationView.setSheet("explorer_left.png",5);
-        if (moveType==MoveType.UP) animationView.setSheet("explorer_up.png",5);
-    }
-
-    public void moveAnimation() {
-        if (!initAnimation) initAnimation();
-        Move moveDirection = Move.create(moveType);
-        moveDirection.move(gameObject);
-        animationView.currentImage++;
-        if (getX()==targetPoint.x && getY()==targetPoint.y) {
-            isMoving = false;
-            setColumn(targetGrid.x);
-            setRow(targetGrid.y);
-            initAnimation = false;
-            GamePlay.playerTurn = false;
-        }
-    }
-
     public boolean finished() {
         return !isMoving && !isFighting;
     }
 
     public void draw(Graphics g) {
-        System.out.println(gameObject.getX() + " " + gameObject.getY());
         if (animationView.nImage==0) animationView.setSheet("explorer_right.png",5);
         if (isMoving) animationView.drawImage(g,gameObject);
         else animationView.drawImage(g,gameObject,true);

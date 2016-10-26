@@ -40,6 +40,7 @@ public class AnimationView implements GameView {
         }
 
         nImage = n;
+        currentImage = 0;
         for (int i=0;i<n;i++) sheet[i] = bigImage.getSubimage(i*sizeX,0,sizeX,sizeY);
     }
 
