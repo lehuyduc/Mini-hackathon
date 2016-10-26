@@ -50,7 +50,7 @@ public class EnemyControllerWhite extends EnemyController implements Colliable {
         }
     }
 
-
+    // Mummy trắng đi ngang trước dọc sau
     private Point tryDirection(int column0, int row0) {
         int column, row, sql = GameConfig.DEFAULT_TILE_LENGTH, best = 1000000;
         Point res = new Point(column0,row0);

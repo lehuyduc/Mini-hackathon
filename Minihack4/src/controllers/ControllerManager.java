@@ -50,6 +50,7 @@ public class ControllerManager implements BaseController {
             singleController.draw(g);
     }
 
+    //Sau mỗi lần run sẽ kiểm tra xem xóa phần tử đc chưa, nếu đc thì xóa
     public void run() {
         for (SingleController singleController : singleControllers)
             singleController.run();

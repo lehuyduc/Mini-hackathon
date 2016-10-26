@@ -33,6 +33,7 @@ public class SingleControllerWithAnimation extends SingleController {
         moveDirection.move(gameObject);
         animationView.currentImage++;
 
+        //Nếu đã đi >= mục tiêu thì dừng
         boolean doneMoveHorizontal = (targetPoint.x != beginPoint.x &&
                 (getX() - beginPoint.x) / (targetPoint.x - beginPoint.x) >= 1);
 
@@ -46,7 +47,6 @@ public class SingleControllerWithAnimation extends SingleController {
             setColumn(targetGrid.x);
             setRow(targetGrid.y);
             initAnimation = false;
-   //         GamePlay.playerTurn = false;
         }
     }
 }
