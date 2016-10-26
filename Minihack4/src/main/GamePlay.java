@@ -46,7 +46,6 @@ public class GamePlay implements GameGame {
         GameMap.instance.draw(screenGraphics);
         ControllerController.instance.draw(screenGraphics);
 
-
         g.drawImage(gameMap,MAP_LEFT,MAP_TOP,360,360,null);
     }
 

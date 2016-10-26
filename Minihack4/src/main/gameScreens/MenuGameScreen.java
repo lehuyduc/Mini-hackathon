@@ -26,7 +26,7 @@ public class MenuGameScreen extends GameScreen{
     }
 
     @Override
-    void draw(Graphics g) {
+    void update(Graphics g) {
         g.drawImage(background,0,0, GameConfig.BACKGROUND_WIDTH,GameConfig.BACKGROUND_HEIGHT,null);
     }
 

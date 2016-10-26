@@ -15,6 +15,6 @@ public abstract class GameScreen implements KeyListener, MouseListener, MouseMot
     }
 
     abstract void init();
-    abstract void draw(Graphics g);
+    abstract void update(Graphics g);
     abstract void run();
 }
