@@ -1,0 +1,122 @@
+package main.levels;
+
+import controllers.*;
+import main.Background;
+import main.GamePlay;
+import models.GameObject;
+
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+/**
+ * Created by Le Huy Duc on 21/10/2016.
+ */
+public class GameLevel {
+
+    protected int MAP_WIDTH = 6,
+            MAP_HEIGHT = 6;
+    protected int MAP_TOP = 1, MAP_LEFT = 1;
+    protected Point[] wallDowns;
+    protected boolean[][] wallDown;
+    protected Point[] wallRights;
+    protected boolean[][] wallRight;
+    protected Image[][] backgroundTile;
+
+    public GameLevel() {
+        wallDowns = new Point[20];
+        wallDown = GamePlay.wallDown;
+        wallRights = new Point[20];
+        wallRight = GamePlay.wallRight;
+        backgroundTile = Background.backgroundTile;
+    }
+
+
+    public boolean hasLose() {
+        Vector<SingleController> singleControllers = MummyControllerManager.instance.getManager();
+        for (SingleController singleController : singleControllers) {
+            GameObject go = singleController.getGameObject();
+            if (go.getX()== PlayerController.instance.getX() &&
+                    go.getY()==PlayerController.instance.getY()) return true;
+        }
+        return false;
+    }
+
+    public void createLevel(int level) {
+
+        try
+        {
+            Scanner sc = new Scanner(new File("" + level + ".txt"));
+            MAP_WIDTH = Integer.parseInt(sc.next());
+            MAP_HEIGHT = Integer.parseInt(sc.next());
+            MAP_TOP = Integer.parseInt(sc.next());
+            MAP_LEFT = Integer.parseInt(sc.next());
+            createWallDown(sc, level);
+            createWallRight(sc, level);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasWon() {
+        if (PlayerController.instance.getX() == GamePlay.exitX &&
+                PlayerController.instance.getY() == GamePlay.exitY) return true;
+        return false;
+    }
+
+
+    private void createWallDown(Scanner sc, int level) {
+//        int n = 4;
+//        wallDowns[1] = new Point(2,4);
+//        wallDowns[2] = new Point(3,1);
+//        wallDowns[3] = new Point(5,2);
+//        wallDowns[4] = new Point(6,4);
+//        for (int i=1;i<=n;i++) {
+//            int x = wallDowns[i].x + MAP_LEFT - 1;
+//            int y = wallDowns[i].y + MAP_TOP - 1;
+//            wallDown[x][y] = true;
+//            WallControllerManager.instance.add(WallController.create(x,y, WallType.DOWN));
+//        }
+        int n = Integer.parseInt(sc.nextLine());
+        for (int i = 1; i <= n; i++) {
+            String string = sc.nextLine();
+            StringTokenizer st = new StringTokenizer(string);
+            wallDowns[i] = new Point(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        }
+        for (int i=1;i<=n;i++) {
+            int x = wallDowns[i].x + MAP_LEFT - 1;
+            int y = wallDowns[i].y + MAP_TOP - 1;
+            wallDown[x][y] = true;
+            WallControllerManager.instance.add(WallController.create(x,y, WallType.DOWN));
+        }
+    }
+
+    private void createWallRight(Scanner sc, int level) {
+//        int m = 5;
+//        wallRights[1] = new Point(1,3);
+//        wallRights[2] = new Point(2,5);
+//        wallRights[3] = new Point(3,2);
+//        wallRights[4] = new Point(4,3);
+//        wallRights[5] = new Point(5,5);
+//
+        int m = Integer.parseInt(sc.nextLine());
+        for (int i = 1; i <= m; i++) {
+            String string = sc.nextLine();
+            StringTokenizer st = new StringTokenizer(string);
+            wallRights[i] = new Point(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        }
+        for (int i=1;i<=m;i++) {
+            int x = wallRights[i].x + MAP_LEFT - 1;
+            int y = wallRights[i].y + MAP_TOP - 1;
+            wallRight[x][y] = true;
+            WallControllerManager.instance.add(WallController.create(x,y, WallType.RIGHT));
+        }
+    }
+
+    void run() {
+
+    }
+}

@@ -1,0 +1,52 @@
+package controllers;
+
+import controllers.movement.Move;
+import controllers.movement.MoveType;
+import main.GamePlay;
+import views.AnimationView;
+
+import java.awt.*;
+
+/**
+ * Created by Le Huy Duc on 23/10/2016.
+ */
+public class SingleControllerWithAnimation extends SingleController {
+
+    protected MoveType moveType;
+    protected boolean initAnimation = false;
+    protected AnimationView animationView;
+    protected Point beginPoint, targetPoint, targetGrid;
+    protected String unitName;
+
+
+    public SingleControllerWithAnimation() {
+
+    }
+
+    public void initAnimation() {
+        animationView.setSheet(unitName + "_" + MoveType.fileNameOf(moveType) + ".png",5);
+    }
+
+    public void moveAnimation() {
+        if (!initAnimation) initAnimation();
+        Move moveDirection = Move.create(moveType);
+        moveDirection.move(gameObject);
+        animationView.currentImage++;
+
+        boolean doneMoveHorizontal = (targetPoint.x != beginPoint.x &&
+                (getX() - beginPoint.x) / (targetPoint.x - beginPoint.x) >= 1);
+
+        boolean doneMoveVertical = (targetPoint.y != beginPoint.y &&
+                (getY() - beginPoint.y) / (targetPoint.y - beginPoint.y) >= 1);
+        if (this instanceof EnemyControllerWhite) {
+
+        }
+        if (doneMoveHorizontal || doneMoveVertical) {
+            isMoving = false;
+            setColumn(targetGrid.x);
+            setRow(targetGrid.y);
+            initAnimation = false;
+   //         GamePlay.playerTurn = false;
+        }
+    }
+}
