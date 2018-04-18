@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Le Huy Duc on 20/10/2016.
  */
-public class EnemyController extends SingleControllerWithAnimation {
+public abstract class EnemyController extends SingleControllerWithAnimation {
 
     private static int SIZEX = 50, SIZEY = 50;
     protected int moveDirections = 4;

@@ -75,7 +75,7 @@ public class EnemyControllerWhite extends EnemyController implements Colliable {
 
     public void move(GameObject go) {
         Point target = tryDirection(go.getColumn(),go.getRow());
-        if (target.x==getColumn() && target.y==getRow()) return;
+        if (target.x==getColumn() && target.y==getRow()) return; // do nothing because already there
         isMoving = true;
         animationView.firstImage = System.currentTimeMillis();
     }
